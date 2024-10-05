@@ -6,34 +6,34 @@ from torchvision.datasets import MNIST
 
 def load_mnist_loader(batch_size):
     dataset = MNIST(
-            root='./data',
-            train=True,
-            transform=transforms.ToTensor(),
-            download=True
-        )
+        root='./data',
+        train=True,
+        transform=transforms.ToTensor(),
+        download=True
+    )
     test_set = MNIST(
-            root='./data',
-            train=False,
-            transform=transforms.ToTensor(),
-            download=True
-        )
+        root='./data',
+        train=False,
+        transform=transforms.ToTensor(),
+        download=False
+    )
 
     train_set, eval_set = random_split(dataset, [50000, 10000])
     train_loader = DataLoader(
-            dataset=train_set, 
-            batch_size=batch_size, 
-            shuffle=True
-        )
+        dataset=train_set, 
+        batch_size=batch_size, 
+        shuffle=True
+    )
     eval_loader = DataLoader(
-            dataset=eval_set,
-            batch_size=batch_size,
-            shuffle=True
-        )
+        dataset=eval_set,
+        batch_size=batch_size,
+        shuffle=True
+    )
     test_loader = DataLoader(
-            dataset=test_set,
-            batch_size=batch_size,
-            shuffle=True
-        )
+        dataset=test_set,
+        batch_size=batch_size,
+        shuffle=True
+    )
     return train_loader, eval_loader, test_loader
 
 def print_auto_logged_info(r):

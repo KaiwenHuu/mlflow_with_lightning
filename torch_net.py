@@ -34,31 +34,32 @@ class ConvNet(nn.Module):
     def _build(self, height, width, out_dim):
         #in_dim = height * width
         self.conv1 = nn.Conv2d(
-                in_channels=1,
-                out_channels=4,
-                kernel_size=self.kernel_size,
-                padding=1
-            )
+            in_channels=1,
+            out_channels=4,
+            kernel_size=self.kernel_size,
+            padding=1
+        )
         self.bn1 = nn.BatchNorm2d(4)
         self.pool = nn.MaxPool2d(2,2)
         self.conv2 = nn.Conv2d(
-                in_channels=4,
-                out_channels=8,
-                kernel_size=self.kernel_size,
-                padding=1)
+            in_channels=4,
+            out_channels=8,
+            kernel_size=self.kernel_size,
+            padding=1)
         self.bn2 = nn.BatchNorm2d(8)
         #in_dim_side = in_dim**(1/2)
         linear_in_dim = 8 * int(height / 4) * int(width / 4)
         layer_sizes = [linear_in_dim, linear_in_dim >> 1, linear_in_dim >> 2] + [out_dim]
-        layers = [self.conv1,
-                  self.bn1,
-                  self.pool,
-                  nn.ReLU(inplace=True),
-                  self.conv2,
-                  self.bn2,
-                  self.pool,
-                  nn.ReLU(inplace=True),
-                  nn.Flatten()]
+        layers = [
+            self.conv1,
+            self.bn1,
+            self.pool,
+            nn.ReLU(inplace=True),
+            self.conv2,
+            self.bn2,
+            self.pool,
+            nn.ReLU(inplace=True),
+            nn.Flatten()]
         for in_size, out_size in zip(layer_sizes[:-1], layer_sizes[1:]):
             lin = nn.Linear(in_size, out_size, device=self.device)
             self._init(lin.weight)
