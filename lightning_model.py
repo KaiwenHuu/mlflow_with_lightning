@@ -17,14 +17,14 @@ class LitConvModel(L.LightningModule):
     def forward(self, x):
         return self.model(x)
 
-    def training_step(self, batch, batch_idx):
+    def training_step(self, batch):
         x, y = batch
         logits = self(x)
         loss = self.loss_fn(logits, y)
         self.log("train_loss", loss, on_epoch=True)
         return loss
 
-    def validation_step(self, batch, batch_idx):
+    def validation_step(self, batch):
         x, y = batch
         logits = self(x)
         loss = self.loss_fn(logits, y)
