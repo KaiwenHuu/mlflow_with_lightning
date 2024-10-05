@@ -8,4 +8,4 @@ Use the `lightning` library to abstract away your deep learning model. You can c
 2. Define your `LightningModule`, which wraps the `pytorch` model.
 3. Define the following functions: `forward`, `training_step` and `configure_optimizers`. Some optional functions include `validation_step` and `test_step` etc.
    
-With these set up and the right `DataLoader`, you can fit your model easily. A neat thing about `lightning` is that it works very nicely with `mlflow`. Here is a nice [documentation](https://mlflow.org/docs/latest/python_api/mlflow.pytorch.html) of how you can log your `pytorch` experiment.
+With these and the the correct data, you can fit your model easily. A neat thing about `lightning` is that it works very nicely with `mlflow`. Here is a nice [documentation](https://mlflow.org/docs/latest/python_api/mlflow.pytorch.html) of how you can log your `pytorch` experiment.
