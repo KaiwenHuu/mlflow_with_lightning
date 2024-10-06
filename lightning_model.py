@@ -36,6 +36,12 @@ class LitConvModel(L.LightningModule):
         #self.log("val_accuracy_mlflow", acc)
         return loss
 
+    def test_step(self, batch):
+        x, y = batch
+        logits = self(x)
+        acc = self.val_accuracy(logits, y)
+        self.log("test_accuracy", acc)
+
     def configure_optimizers(self):
         return Adam(self.parameters(), lr=self.lr)
 
