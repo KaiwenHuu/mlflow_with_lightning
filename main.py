@@ -3,6 +3,7 @@ import mlflow
 import os, argparse
 #import pytorch_lightning as pl
 
+from datetime import datetime
 from lightning.pytorch.callbacks.early_stopping import EarlyStopping
 from lightning_model import LitConvModel
 from mlflow.models import infer_signature
@@ -15,6 +16,8 @@ from utils import (
 )
 
 def mnist_experiment(batch_size=256, epochs=10):
+    mnist = 'mnist'
+    mlflow.set_experiment(mnist)
     mlflow.pytorch.autolog()
 
     train_loader, eval_loader, test_loader = load_mnist_loader(batch_size)
@@ -25,6 +28,7 @@ def mnist_experiment(batch_size=256, epochs=10):
     #trainer = pl.Trainer(max_epochs = 10)
 
     with mlflow.start_run() as run:
+        mlflow.set_tag('mlflow.runName', f'mnist_{datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}')
         trainer.fit(lit_conv_net, train_loader, eval_loader)
         trainer.test(lit_conv_net, test_loader)
         print_auto_logged_info(mlflow.get_run(run_id=run.info.run_id))
