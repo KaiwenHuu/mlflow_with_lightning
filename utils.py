@@ -29,12 +29,12 @@ def load_mnist_loader(batch_size):
     eval_loader = DataLoader(
         dataset=eval_set,
         batch_size=batch_size,
-        shuffle=True
+        shuffle=False
     )
     test_loader = DataLoader(
         dataset=test_set,
         batch_size=batch_size,
-        shuffle=True
+        shuffle=False
     )
     return train_loader, eval_loader, test_loader
 
@@ -62,17 +62,16 @@ def load_cifar10_loader(batch_size):
     eval_loader = DataLoader(
         dataset=eval_set,
         batch_size=batch_size,
-        shuffle=True
+        shuffle=False
     )
     test_loader = DataLoader(
         dataset=test_set,
         batch_size=batch_size,
-        shuffle=True
+        shuffle=False
     )
     return train_loader, eval_loader, test_loader
 
 def load_food_loader(batch_size, resize=255, center_crop=224):
-
     train_transforms = transforms.Compose(
         [
             #transforms.RandomRotation(30),
@@ -117,12 +116,12 @@ def load_food_loader(batch_size, resize=255, center_crop=224):
     eval_loader = DataLoader(
         dataset=eval_set,
         batch_size=batch_size,
-        shuffle=True
+        shuffle=False
     )
     test_loader = DataLoader(
         dataset=test_set,
         batch_size=batch_size,
-        shuffle=True
+        shuffle=False
     )
     return train_loader, eval_loader, test_loader
 

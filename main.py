@@ -15,7 +15,7 @@ from utils import (
     print_auto_logged_info
 )
 
-def mnist_experiment(batch_size=256, epochs=10):
+def mnist_experiment(batch_size=256, epochs=100):
     mnist = 'mnist'
     mlflow.set_experiment(mnist)
     mlflow.pytorch.autolog()
@@ -24,25 +24,30 @@ def mnist_experiment(batch_size=256, epochs=10):
     batch = iter(train_loader)
     images, labels = next(batch)
     lit_conv_net = LitConvModel(images, labels)
-    trainer = L.Trainer(max_epochs = epochs)
+    trainer = L.Trainer(
+            max_epochs=epochs,
+           # enable_checkpointing=False,
+           # enable_model_summary=False,
+           # barebones=True
+            )
     #trainer = pl.Trainer(max_epochs = 10)
 
     with mlflow.start_run() as run:
-        mlflow.set_tag('mlflow.runName', f'mnist_{datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}')
+        mlflow.set_tag('mlflow.runName', f'{mnist}_{datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}')
+
         trainer.fit(lit_conv_net, train_loader, eval_loader)
         trainer.test(lit_conv_net, test_loader)
         print_auto_logged_info(mlflow.get_run(run_id=run.info.run_id))
         
-        model_uri = f"runs:/{run.info.run_id}/model"
-        loaded_model = mlflow.pytorch.load_model(model_uri)
+        #model_uri = f"runs:/{run.info.run_id}/model"
+        #loaded_model = mlflow.pytorch.load_model(model_uri)
 
-        test_batch = iter(test_loader)
-        test_images, test_labels = next(test_batch)
+        #test_batch = iter(test_loader)
+        #test_images, test_labels = next(test_batch)
 
-        y_pred = loaded_model(test_images)
-        signature = infer_signature(test_images.numpy(), y_pred.detach().numpy())
-        #NOTE: loaded_model might just be lit_conv_net.
-        mlflow.pytorch.log_model(loaded_model, "model", signature=signature)
+        #y_pred = loaded_model(test_images)
+        #signature = infer_signature(test_images.numpy(), y_pred.detach().numpy())
+        #mlflow.pytorch.log_model(loaded_model, "model", signature=signature)
 
 def cifar10_experiment(batch_size=256, epochs=100):
     mlflow.pytorch.autolog()

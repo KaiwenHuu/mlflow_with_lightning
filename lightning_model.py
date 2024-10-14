@@ -21,16 +21,16 @@ class LitConvModel(L.LightningModule):
         x, y = batch
         logits = self(x)
         loss = self.loss_fn(logits, y)
-        self.log("train_loss", loss, on_epoch=True)
+        self.log("train_loss", loss, on_step=False, on_epoch=True)
         return loss
 
     def validation_step(self, batch):
         x, y = batch
         logits = self(x)
         loss = self.loss_fn(logits, y)
-        self.log("val_loss", loss)
+        self.log("val_loss", loss, on_step=False, on_epoch=True)
         acc = self.val_accuracy(logits, y)
-        self.log("val_accuracy", acc)
+        self.log("val_accuracy", acc, on_step=False, on_epoch=True)
         #pred = logits.argmax(dim=1)
         #acc = self.val_accuracy(pred, y)
         #self.log("val_accuracy_mlflow", acc)
@@ -40,7 +40,7 @@ class LitConvModel(L.LightningModule):
         x, y = batch
         logits = self(x)
         acc = self.val_accuracy(logits, y)
-        self.log("test_accuracy", acc)
+        self.log("test_accuracy", acc, on_step=False, on_epoch=True)
 
     def configure_optimizers(self):
         return Adam(self.parameters(), lr=self.lr)
